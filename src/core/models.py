@@ -1,22 +1,18 @@
 from src.database.data_base_config import Base
-from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean
+from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+import enum
+
+class PersonTypeEnum(enum.Enum):
+    one = "physical"
+    two = "legal"
 
 class BaseModel(Base):
     id = Column(UUID, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, nullable=True, onupdate=func.now())
-
-class PersonType(Base):
-    __tablename__ = "person_type"
-
-    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
-    name = Column(String, nullable=False, unique=True)
-    description = Column(String, nullable=False)
-
-    persons = relationship("Person", back_populates="type")
 
 class Continent(Base):
     ___tablename__ = "continent"
@@ -51,7 +47,7 @@ class Person(BaseModel):
     __tablename__ = "person"
 
     # id = Column(UUID, primary_key=True, index=True)
-    type = Column(Integer, ForeignKey("person_type.id"))
+    type = Column(String, Enum(PersonTypeEnum))
     address = Column(String, nullable=False)
     number = Column(String, nullable=False)
     neighborhood = Column(String, nullable=False)
@@ -75,3 +71,4 @@ class Company(BaseModel):
     active = Column(Boolean, nullable=False, default=True)
 
     person = relationship("Person", back_populates="companies")
+    stokes = relationship("Stoke", back_populates="company_id")
