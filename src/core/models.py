@@ -24,7 +24,7 @@ class Continent(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     name = Column(String, nullable=False, unique=True)
 
-    countries = relationship("Contry", back_populates="continent_id")
+    countries = relationship("Country", back_populates="continent")
 
 class Country(Base):
     __tablename__ = "country"
@@ -33,8 +33,8 @@ class Country(Base):
     name = Column(String, nullable=False, unique=True)
     continent_id = Column(Integer, ForeignKey("continent.id"), nullable=False)
 
-    continent = relationship("Continent", back_populates="countries")
-    states = relationship("State", back_populates="country_id" )
+    continent = relationship(Continent, back_populates="countries")
+    states = relationship("State", back_populates="country" )
 
 class State(Base):
     __tablename__ = "state"
@@ -43,8 +43,8 @@ class State(Base):
     name = Column(String, nullable=False)
     country_id = Column(Integer, ForeignKey("country.id"), nullable=False)
 
-    persons = relationship("Person", back_populates="state_id")
-    contry = relationship("Country", back_populates="states")
+    persons = relationship("Person", back_populates="state")
+    country = relationship(Country, back_populates="states")
 
 
 class Person(BaseModel):
@@ -62,8 +62,8 @@ class Person(BaseModel):
     # name = Column(String, nullable=False)
     document = Column(String, nullable=False, unique=True)
 
-    state = relationship("State", back_populates="persons")
-    companies = relationship("Company", back_populates="person_id")
+    state = relationship(State, back_populates="persons")
+    companies = relationship("Company", back_populates="person")
 
 
 class Company(BaseModel):
@@ -74,5 +74,5 @@ class Company(BaseModel):
     email = Column(String, nullable=False, unique=True)
     active = Column(Boolean, nullable=False, default=True)
 
-    person = relationship("Person", back_populates="companies")
-    stokes = relationship("Stoke", back_populates="company_id")
+    person = relationship(Person, back_populates="companies")
+    stokes = relationship("Stoke", back_populates="company")

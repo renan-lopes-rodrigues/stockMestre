@@ -2,7 +2,7 @@ from src.database.data_base_config import Base
 from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, CheckConstraint, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from src.core.models import BaseModel
+from src.core.models import BaseModel, Company
 import enum
 
 class MeasurementEnum(enum.Enum):
@@ -15,7 +15,7 @@ class Department(BaseModel):
 
     description = Column(String, nullable=False)
 
-    products = relationship("Products", back_populates="deparment_id")
+    products = relationship("Product", back_populates="department")
 
 
 class Product(BaseModel):
@@ -27,7 +27,8 @@ class Product(BaseModel):
     size = Column(String, nullable=False)
     weight = Column(Integer, nullable=True)
 
-    department = relationship("deparment", back_populates="products")
+    department = relationship(Department, back_populates="products")
+    stoke = relationship("Stoke", back_populates='products')
 
 class Stoke(BaseModel):
     __tablename__ = "stoke"
@@ -43,3 +44,6 @@ class Stoke(BaseModel):
     last_entry = Column(DateTime, nullable=True)
     active = Column(Boolean, nullable=False, default=True)
     bola = Column(Boolean)
+
+    company = relationship(Company, back_populates='stokes')
+    products = relationship(Product, back_populates='stoke')
