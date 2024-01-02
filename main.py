@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from src import resources 
+# from src import resources
+from src.warehouse import resources
 
 app = FastAPI()
 
