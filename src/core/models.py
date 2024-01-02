@@ -9,13 +9,17 @@ class PersonTypeEnum(enum.Enum):
     two = "legal"
 
 class BaseModel(Base):
+    __abstract__ = True
     id = Column(UUID, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, nullable=True, onupdate=func.now())
 
+    def __init__(self, name):
+        self.name = name
+
 class Continent(Base):
-    ___tablename__ = "continent"
+    __tablename__ = "continent"
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     name = Column(String, nullable=False, unique=True)
@@ -52,7 +56,7 @@ class Person(BaseModel):
     number = Column(String, nullable=False)
     neighborhood = Column(String, nullable=False)
     city = Column(String, nullable=False)
-    state_id = Column(String, ForeignKey("state.id"), nullable=False)
+    state_id = Column(Integer, ForeignKey("state.id"), nullable=False)
     cep = Column(String, nullable=False)
     complement = Column(String, nullable=True)
     # name = Column(String, nullable=False)
