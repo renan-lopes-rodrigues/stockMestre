@@ -1,41 +1,20 @@
 from logging.config import fileConfig
 
 import logging
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from src.database.data_base_config import Base,engine
-from src import models
+from src.database.data_base_config import Base
 
 
 from alembic import context
 
 logger = logging.getLogger('alembic.env')
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-# target_metadata = None
-# config.set_main_option(
-#     'sqlalchemy.url',
-#     str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%'))
-# target_metadata = current_app.extensions['migrate'].db.metadata
-# target_metadata = Base.metadata
 target_metadata = Base.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline() -> None:
@@ -76,24 +55,6 @@ def run_migrations_online() -> None:
     alembic_config = config.get_section(config.config_ini_section)
     alembic_config['sqlalchemy.url'] = SQLALCHEMY_DATA_BASE_URL
     engine = engine
-    # engine = engine_from_config(
-    #     alembic_config,
-    #     prefix='sqlalchemy.',
-    #     poolclass=pool.NullPool)
-
-
-    # connectable = engine_from_config(
-    #     config.get_section(config.config_ini_section, {}),
-    #     prefix="sqlalchemy.",
-    #     poolclass=pool.NullPool,
-    # )
-    # def process_revision_directives(context, revision, directives):
-    #     if getattr(config.cmd_opts, 'autogenerate', False):
-    #         script = directives[0]
-    #         if script.upgrade_ops.is_empty():
-    #             directives[:] = []
-    #             logger.info('No changes in schema detected.')
-    # connectable = current_app.extensions['migrate'].db.engine
 
     with engine.connect() as connection:
         context.configure(
