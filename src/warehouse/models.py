@@ -42,3 +42,4 @@ class Stoke(BaseModel):
     last_sale = Column(DateTime, nullable=True)
     last_entry = Column(DateTime, nullable=True)
     active = Column(Boolean, nullable=False, default=True)
+    bola = Column(Boolean)

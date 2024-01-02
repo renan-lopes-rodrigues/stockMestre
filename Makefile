@@ -3,3 +3,6 @@ start:
 
 stop:
 	docker-compose down
+
+db_migrate:
+	alembic revision --autogenerate

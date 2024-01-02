@@ -12,15 +12,30 @@ services:
         ports:
            - '5432:5432'
 
+        networks:
+            - stockMestre
+
     api:
+        restart: always
         container_name: api
         build: .
+        command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --reload"
         ports:
             - "8000:8000"
         volumes:
             - ./:/www
 
+        depends_on:
+            - postgres
+
+        networks:
+            - stockMestre
+
 
 volumes:
     postgres_data:
+
+networks:
+    stockMestre:
+        driver: bridge
 
