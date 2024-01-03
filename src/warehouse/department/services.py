@@ -18,3 +18,7 @@ class DepartmentServices:
     @staticmethod
     def get_all_departments(db: Session):
         return db.query(Department).all()
+
+    @staticmethod
+    def get_a_department_by_id(db:Session, department_id: str):
+        return db.query(Department).get(department_id)
