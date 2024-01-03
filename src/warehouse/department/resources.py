@@ -25,5 +25,5 @@ class DepartmentResources:
         return DepartmentServices.get_all_departments(db=db)
 
     @router.get('/stoke/departments/{department_id}', response_model=DepartmentListResponse, tags=tags)
-    def get_a_department(department_id: str, db:Session = Depends(get_db)):
-        return DepartmentServices.get_a_department_by_id(db=db, department_id=department_id)
+    def get_one_department(department_id: str, db:Session = Depends(get_db)):
+        return DepartmentServices.get_one_department_by_id(db=db, department_id=department_id)

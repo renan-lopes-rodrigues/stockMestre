@@ -32,7 +32,7 @@ class DepartmentServices:
             raise HTTPException(status_code=500, detail='Internal Error')
 
     @staticmethod
-    def get_a_department_by_id(db:Session, department_id: str):
+    def get_one_department_by_id(db:Session, department_id: str):
         try:
             return db.query(Department).get(department_id)
 
