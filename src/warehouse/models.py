@@ -1,5 +1,5 @@
 from src.database.data_base_config import Base
-from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, CheckConstraint, Enum
+from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, CheckConstraint, Enum, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from src.core.models import BaseModel, Company
@@ -12,6 +12,7 @@ class MeasurementEnum(enum.Enum):
 
 class Department(BaseModel):
     __tablename__ = "department"
+    __table_args__ = (UniqueConstraint('name', name='department_unique'),)
 
     description = Column(String, nullable=False)
 
@@ -20,6 +21,7 @@ class Department(BaseModel):
 
 class Product(BaseModel):
     __tablename__ = "product"
+    __table_args__ = (UniqueConstraint('name', 'department_id', name='prod_department_unique'),)
 
     department_id = Column(UUID, ForeignKey("department.id"), nullable=False)
     description = Column(String, nullable=False)
@@ -32,6 +34,7 @@ class Product(BaseModel):
 
 class Stoke(BaseModel):
     __tablename__ = "stoke"
+    __table_args__ = (UniqueConstraint('company_id', 'product_id', name='company_prod_unique'),)
 
     alias = Column(String, nullable=False)
     company_id = Column(UUID, ForeignKey("company.id"), nullable=False)

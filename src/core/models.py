@@ -1,5 +1,5 @@
 from src.database.data_base_config import Base
-from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, Enum
+from sqlalchemy import Column, UUID, Integer, String, ForeignKey, DateTime, Boolean, Enum, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -20,6 +20,7 @@ class BaseModel(Base):
 
 class Continent(Base):
     __tablename__ = "continent"
+    __table_args__ = (UniqueConstraint('name', name='continent_unique'),)
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     name = Column(String, nullable=False, unique=True)
@@ -28,6 +29,7 @@ class Continent(Base):
 
 class Country(Base):
     __tablename__ = "country"
+    __table_args__ = (UniqueConstraint('name', name='country_unique'),)
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     name = Column(String, nullable=False, unique=True)
@@ -38,6 +40,7 @@ class Country(Base):
 
 class State(Base):
     __tablename__ = "state"
+    __table_args__ = (UniqueConstraint('name', 'country_id', name='country_state'),)
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False, index=True)
     name = Column(String, nullable=False)
@@ -49,8 +52,8 @@ class State(Base):
 
 class Person(BaseModel):
     __tablename__ = "person"
+    __table_args__ = (UniqueConstraint('document', name='person_unique'),)
 
-    # id = Column(UUID, primary_key=True, index=True)
     type = Column(String, Enum(PersonTypeEnum))
     address = Column(String, nullable=False)
     number = Column(String, nullable=False)
@@ -59,7 +62,6 @@ class Person(BaseModel):
     state_id = Column(Integer, ForeignKey("state.id"), nullable=False)
     cep = Column(String, nullable=False)
     complement = Column(String, nullable=True)
-    # name = Column(String, nullable=False)
     document = Column(String, nullable=False, unique=True)
 
     state = relationship(State, back_populates="persons")
