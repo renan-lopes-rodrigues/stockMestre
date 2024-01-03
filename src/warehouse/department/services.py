@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from src.warehouse.models import Department
-from src.warehouse.schemas import ItemBase
+from src.schemas import ItemBase
 from sqlalchemy.exc import DataError
 from fastapi import HTTPException
 from uuid import uuid4
