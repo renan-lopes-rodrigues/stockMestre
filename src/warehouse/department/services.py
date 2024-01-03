@@ -6,6 +6,9 @@ from fastapi import HTTPException
 from uuid import uuid4
 
 class DepartmentServices:
+    """
+    Handles department services
+    """
 
     @staticmethod
     def create_department(db: Session, department: ItemBase):
@@ -14,10 +17,11 @@ class DepartmentServices:
             db_department.id = uuid4()
             db_department.description = department.description
             db.add(db_department)
-            db.commit()
+            db.flush()
             db.refresh(db_department)
             return db_department
         except Exception as ex:
+            db.rollback()
             raise HTTPException(status_code=500, detail='Internal Error')
 
     @staticmethod

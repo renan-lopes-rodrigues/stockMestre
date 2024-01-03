@@ -16,7 +16,9 @@ class DepartmentResources:
 
     @router.post('/stoke/departments', response_model=DepartmentListResponse, tags=tags)
     def create_department(department: ItemBase, db:Session = Depends(get_db)):
-        return DepartmentServices.create_department(db=db, department=department)
+        response = DepartmentServices.create_department(db=db, department=department)
+        db.commit()
+        return response
 
     @router.get('/stoke/departments', response_model=list[DepartmentListResponse], tags=tags)
     def get_all_departments(db:Session = Depends(get_db)):
