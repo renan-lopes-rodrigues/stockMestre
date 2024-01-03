@@ -1,15 +1,15 @@
 import datetime
 # from uuid import uuid4
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 class ItemBase(BaseModel):
     name: str
     description: str | None = None
 
 class DepartmentList(ItemBase):
-    id: str
-    created_at: str
-    updated_at: str
+    id: UUID4
+    created_at: datetime.datetime
+    updated_at: datetime.datetime | None
 
 class ProductCreate(ItemBase):
     department_id: int
