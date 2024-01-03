@@ -1,7 +1,7 @@
 from logging.config import fileConfig
 
 import logging
-from src.database.data_base_config import Base
+from src.models import Base
 
 
 from alembic import context
