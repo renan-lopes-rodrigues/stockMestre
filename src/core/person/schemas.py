@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import UUID4, BaseModel
 from src.schemas import ItemBase, ItemBaseResponse
 from src.core.schemas import StateSchemaDetail
 
@@ -21,7 +21,8 @@ class PersonSchemaRequest(BaseModel):
     complement: str | None = None
     document: str
 
-class PersonSchemaDetail(BaseModel):
+class PersonSchemaDetail(ItemBaseResponse):
+    id: UUID4
     name: str
     type: PersonType
     address: str

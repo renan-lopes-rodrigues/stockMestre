@@ -2,8 +2,9 @@ from sqlalchemy.orm import Session
 from src.core.person.schemas import PersonSchemaRequest
 from src.core.models import Person
 from uuid import uuid4
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, DataError
 from fastapi import HTTPException
+
 
 class PersonServices:
     """
@@ -36,3 +37,17 @@ class PersonServices:
         except Exception as ex:
             db.rollback()
             raise HTTPException(status_code=500, detail="Internal Error.")
+
+    @staticmethod
+    def get_all_persons(db: Session):
+        return db.query(Person).all()
+
+    @staticmethod
+    def get_person_by_id(db: Session, person_id: str):
+        try:
+            return db.query(Person).get(person_id)
+        except DataError as ex:
+            raise HTTPException(status_code=404, detail="Person not found.")
+
+        except Exception as ex:
+            raise HTTPException(status_code=500, detail='Internal Error')
