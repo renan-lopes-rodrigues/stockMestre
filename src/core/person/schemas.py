@@ -3,6 +3,7 @@ from enum import Enum
 from pydantic import UUID4, BaseModel
 from src.schemas import ItemBase, ItemBaseResponse
 from src.core.schemas import StateSchemaDetail
+from src.core.schemas import CompanySchemaBasic
 
 
 class PersonType(Enum):
@@ -33,4 +34,5 @@ class PersonSchemaDetail(ItemBaseResponse):
     cep: str
     complement: str | None = None
     document: str
+    companies: list[CompanySchemaBasic]
 
