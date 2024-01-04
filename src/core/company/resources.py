@@ -17,3 +17,11 @@ class CompanyResources:
         response = CompanyServices.create_company(db=db, company=company)
         db.commit()
         return response
+
+    @router.get('/core/companies', response_model=list[CompanySchemaDetail], tags=tags)
+    def get_all_companies(db: Session = Depends(get_db)):
+        return CompanyServices.get_all_companies(db=db)
+
+    @router.get('/core/companies/{company_id}', response_model=CompanySchemaDetail, tags=tags)
+    def get_one_company(company_id: str, db: Session = Depends(get_db)):
+        return CompanyServices.get_one_company_by_id(db=db, company_id=company_id)

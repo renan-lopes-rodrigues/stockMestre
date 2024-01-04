@@ -3,7 +3,7 @@ from src.core.company.schemas import CompanySchemaRequest
 from src.core.models import Company
 from uuid import uuid4
 from fastapi import HTTPException
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, DataError
 
 class CompanyServices:
     """
@@ -31,3 +31,17 @@ class CompanyServices:
         except Exception as ex:
             db.rollback()
             raise HTTPException(status_code=500, detail='Internal Error.')
+
+    @staticmethod
+    def get_all_companies(db: Session):
+        return db.query(Company).all()
+
+    @staticmethod
+    def get_one_company_by_id(db: Session, company_id: str):
+        try:
+            return db.query(Company).get(company_id)
+        except DataError as ex:
+            raise HTTPException(status_code=404, detail="Company not found.")
+
+        except Exception as ex:
+            raise HTTPException(status_code=500, detail='Internal Error')
