@@ -6,6 +6,9 @@ from src.database.data_base_config import get_db
 
 
 class ProductResources:
+    """
+    Class responsible to products Resources
+    """
 
     router = APIRouter()
     tags = ["Warehouse Operations | Products"]
