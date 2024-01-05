@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from src.warehouse.models import Department
 from src.schemas import ItemBase
-from sqlalchemy.exc import DataError
+from sqlalchemy.exc import DataError, IntegrityError
 from fastapi import HTTPException
 from uuid import uuid4
 
@@ -20,9 +20,14 @@ class DepartmentServices:
             db.flush()
             db.refresh(db_department)
             return db_department
+
+        except IntegrityError as ex:
+            db.rollback()
+            raise HTTPException(status_code=400, detail='Product already exists.')
+
         except Exception as ex:
             db.rollback()
-            raise HTTPException(status_code=500, detail='Internal Error')
+            raise HTTPException(status_code=500, detail="Internal Error.")
 
     @staticmethod
     def get_all_departments(db: Session):
