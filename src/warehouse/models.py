@@ -30,7 +30,7 @@ class Product(BaseModel):
     weight = Column(Integer, nullable=True)
 
     department = relationship(Department, back_populates="products")
-    stoke = relationship("Stoke", back_populates='products')
+    stoke = relationship("Stoke", back_populates='product')
 
 class Stoke(BaseModel):
     __tablename__ = "stoke"
@@ -48,4 +48,4 @@ class Stoke(BaseModel):
     active = Column(Boolean, nullable=False, default=True)
 
     company = relationship(Company, back_populates='stokes')
-    products = relationship(Product, back_populates='stoke')
+    product = relationship(Product, back_populates='stoke')

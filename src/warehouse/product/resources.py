@@ -6,6 +6,9 @@ from src.database.data_base_config import get_db
 
 
 class ProductResources:
+    """
+    Class responsible to products Resources
+    """
 
     router = APIRouter()
     tags = ["Warehouse Operations | Products"]
@@ -20,6 +23,6 @@ class ProductResources:
         db.commit()
         return response
 
-    @router.get('/stoke/products/{product_id}', response_model=ProductSchemaRequest, tags=tags)
+    @router.get('/stoke/products/{product_id}', response_model=ProductSchemaDetail, tags=tags)
     def get_one_product(product_id: str, db: Session = Depends(get_db)):
         return ProductServices.get_one_product(db=db, product_id=product_id)
