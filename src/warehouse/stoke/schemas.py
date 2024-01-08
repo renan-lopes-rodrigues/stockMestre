@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import UUID4
+from pydantic import UUID4, BaseModel
 from src.schemas import ItemBase, ItemBaseResponse
 from src.core.company.schemas import CompanySchemaDetail
 from src.warehouse.product.schemas import ProductSchemaDetail
@@ -10,7 +10,7 @@ class MeasurementEnum(Enum):
     two = "MG"
     three = "UN"
 
-class StokeSchemaRequest(ItemBase):
+class StokeSchemaRequestIn(ItemBase):
     alias: str
     company_id: UUID4
     product_id: UUID4
@@ -19,6 +19,10 @@ class StokeSchemaRequest(ItemBase):
     price: int
     cost: int
     active: bool
+
+class StokeSchemaRequestOut(BaseModel):
+    stoke_id: UUID4
+    amount: int
 
 class StokeSchemaDetail(ItemBaseResponse):
     id: UUID4

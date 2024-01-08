@@ -2,7 +2,7 @@ from uuid import uuid4
 from sqlalchemy.orm import Session
 from src.warehouse.models import Stoke
 from sqlalchemy import and_
-from src.warehouse.stoke.schemas import StokeSchemaRequest
+from src.warehouse.stoke.schemas import StokeSchemaRequestIn
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
@@ -25,7 +25,7 @@ class StokeServices:
 
 
     @staticmethod
-    def create_new_stoke(db: Session, request: StokeSchemaRequest) -> Stoke:
+    def create_new_stoke(db: Session, request: StokeSchemaRequestIn) -> Stoke:
         """
         Creates a new Stoke for the product
         """

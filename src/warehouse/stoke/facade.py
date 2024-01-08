@@ -1,6 +1,6 @@
 from src.warehouse.stoke.services import StokeServices
 from sqlalchemy.orm import Session
-from src.warehouse.stoke.schemas import StokeSchemaRequest
+from src.warehouse.stoke.schemas import StokeSchemaRequestIn, StokeSchemaRequestOut
 from src.warehouse.models import Stoke
 from src.core.company.services import CompanyServices
 from src.warehouse.product.services import ProductServices
@@ -13,7 +13,7 @@ class StokeFacade:
     """
 
     @staticmethod
-    def create_new_stoke(db: Session, request: StokeSchemaRequest) -> Stoke:
+    def create_new_entry_on_stoke(db: Session, request: StokeSchemaRequestIn) -> Stoke:
         """
         Creates a new stoke
         """
@@ -78,3 +78,31 @@ class StokeFacade:
 
         except Exception as ex:
                 raise HTTPException(status_code=500, detail="Internal Error.")
+
+    @staticmethod
+    def create_new_out_on_stoke(db: Session, request: StokeSchemaRequestOut) -> Stoke:
+        """
+        Creates a new out on Stoke
+        """
+
+        try:
+            ### Verify if stoke exists
+            stoke: Stoke = db.query(Stoke).get(request.stoke_id)
+            if not stoke:
+                raise HTTPException(status_code=404, detail="Stoke not Found.")
+
+            if stoke.amount < request.amount:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Stoke lower than amount requested to out. Stoke: {stoke.amount}, Amount requested: {request.amount}"
+                )
+
+            stoke.amount -= request.amount
+            stoke.last_sale = datetime.now()
+
+            db.commit()
+
+            return stoke
+
+        except Exception as ex:
+            raise HTTPException(status_code=500, detail="Internal Error.")
