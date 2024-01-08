@@ -24,7 +24,7 @@ class StokeSchemaDetail(ItemBaseResponse):
     id: UUID4
     alias:str
     company: CompanySchemaDetail
-    products: ProductSchemaDetail
+    product: ProductSchemaDetail
     amount: int
     measurement: MeasurementEnum
     price: int

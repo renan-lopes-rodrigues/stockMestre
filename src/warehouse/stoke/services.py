@@ -56,3 +56,12 @@ class StokeServices:
         except Exception as ex:
             db.rollback()
             raise HTTPException(status_code=500, detail="Internal Error.")
+
+    @staticmethod
+    def get_stoke_by_company_id(db: Session, company_id: str) -> list[Stoke]:
+        """
+        Gets all Stokes by a company
+        """
+
+        response: list[Stoke] = db.query(Stoke).filter(Stoke.company_id == company_id).all()
+        return response
