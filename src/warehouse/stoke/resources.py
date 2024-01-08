@@ -13,7 +13,7 @@ class StokeResources:
     router = APIRouter()
     tags = ["Warehouse Operations | Stoke"]
 
-    @router.post('/stoke/new', response_model=StokeSchemaDetail, tags=tags)
+    @router.post('/stoke/in', response_model=StokeSchemaDetail, tags=tags)
     def create_new_stoke(stoke: StokeSchemaRequest,db: Session = Depends(get_db)):
         return StokeFacade.create_new_stoke(db=db, request=stoke)
 
